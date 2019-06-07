@@ -5,9 +5,6 @@
 LOGGED_IN=`oc whoami | grep 'system:admin'`
 CLUSTER=`oc whoami --show-server`
 
-LOGGED_IN=1
-CLUSTER="blarg"
-
 CERTS_DIR="$HOME/certs/ocp4"
 
 # Make sure user is logged in as system:admin

@@ -31,3 +31,34 @@ To add Github authentication to your cluster:
 3. Run `configure-github-auth.sh`
 
 If all goes well, you should have Github as an identity provider when you login.
+
+
+## HTPasswd Auth (thanks @gnunn)
+
+```
+oc create secret generic htpass-secret --from-file=htpasswd=htpasswd -n openshift-config
+oc apply -f htpasswd.yaml -n openshift-config
+oc adm policy add-cluster-role-to-user cluster-admin admin
+```
+
+Make sure you have a secret locally defined, such as:
+
+```
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: htpasswd
+    challenge: true 
+    login: true 
+    mappingMethod: claim 
+    type: HTPasswd
+    htpasswd:
+      fileData:
+        name: htpass-secret
+```
+
+You can create password hashes with a tool such as:
+[https://www.htaccesstools.com/htpasswd-generator/](https://www.htaccesstools.com/htpasswd-generator/)
